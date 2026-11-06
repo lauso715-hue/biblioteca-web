@@ -1,167 +1,100 @@
 from django.db import models
 
-class Categoria(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
-    descripcion = models.TextField(blank=True, null=True)
-    fecha_creacion = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = "Categoría"
-        verbose_name_plural = "Categorías"
-        ordering = ['nombre']
+class Tema(models.Model):
+    Id_Tema = models.AutoField(primary_key=True)
+    Nombre_Tema = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
-        return self.nombre
-
-class Persona(models.Model):
-    GENERO_CHOICES = [
-        ('FEMENINO', 'Femenino'),
-        ('MASCULINO', 'Masculino'),
-        ('OTRO', 'Otro'),
-        ('PREFIERO_NO_DECIRLO', 'Prefiero no decirlo'),
-    ]
-
-    ROL_CHOICES = [
-        ('ESTUDIANTE', 'Estudiante'),
-        ('AUTOR', 'Autor'),
-    ]
-
-    TIPO_DOCUMENTO_CHOICES = [
-        ('DNI', 'Documento de Identidad'),
-        ('PASSPORT', 'Pasaporte'),
-        ('CEDULA', 'Cedula de Ciudadanía'),
-        ('OTRO', 'Otro'),
-    ]
-
-    numero_documento = models.CharField(primary_key=True, max_length=45)
-    nombre = models.CharField(max_length=45)
-    apellido = models.CharField(max_length=45)
-    correo = models.EmailField(max_length=100, unique=True)
-    fecha_nacimiento = models.DateField(null=True, blank=True)
-    genero = models.CharField(max_length=20, choices=GENERO_CHOICES, null=True, blank=True)
-    rol = models.CharField(max_length=20, choices=ROL_CHOICES)
-    tipo_documento = models.CharField(max_length=45, choices=TIPO_DOCUMENTO_CHOICES)
-
-    def __str__(self):
-        return f"{self.nombre} {self.apellido}"
-
-
-class Autor(models.Model):
-    ESTADO_CHOICES = [
-        ('ACTIVO', 'Activo'),
-        ('INACTIVO', 'Inactivo'),
-    ]
-
-    numero_documento = models.OneToOneField(
-        Persona, on_delete=models.CASCADE, primary_key=True, related_name='autor'
-    )
-    nacionalidad = models.CharField(max_length=45, null=True, blank=True)       
-    biografia = models.CharField(max_length=500, null=True, blank=True)         
-    estado = models.CharField(max_length=45, choices=ESTADO_CHOICES)            # antes: Estado
-
-    def __str__(self):
-        return f"{self.numero_documento.nombre} {self.numero_documento.apellido}"
-
-
-class Estudiante(models.Model):
-    numero_documento = models.OneToOneField(
-        Persona, on_delete=models.CASCADE, primary_key=True, related_name='estudiante'
-    )
-    direccion = models.CharField(max_length=100)
-    telefono = models.CharField(max_length=45, unique=True)
-    grado_escolar = models.CharField(max_length=45, null=True, blank=True)
-
-    def __str__(self):
-        return f"{self.numero_documento.nombre} {self.numero_documento.apellido}"
+        return self.Nombre_Tema
 
 class Editorial(models.Model):
-    id_Editorial = models.AutoField(primary_key=True)
-    direccion = models.CharField(max_length=100) 
-    nombre_editorial = models.CharField(max_length=100) 
+    Id_Editorial = models.AutoField(primary_key=True)
+    Nombre_Editorial = models.CharField(max_length=100)
+    Direccion = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.nombre_editorial
+        return self.Nombre_Editorial
 
-class Tema(models.Model):
-    id_tema = models.AutoField(primary_key=True)
-    nombre_tema = models.CharField(max_length=100) 
-
-    def __str__(self):
-        return self.nombre_tema
-
-class Libro(models.Model):
+class Persona(models.Model):
+    ROL_CHOICES = [
+        ("Estudiante", "Estudiante"),
+        ("Autor", "Autor"),
+    ]
+    TIPO_DOCUMENTO_CHOICES = [
+        ("Cédula de Ciudadania", "Cédula de Ciudadania"),
+        ("Cédula Extranjer", "Cédula Extranjer"),
+        ("Tarjeta de Identidad", "Tarjeta de Identidad"),
+        ("Pasaporte", "Pasaporte"),
+        ("Número de Identificación", "Número de Identificación"),
+    ]
+    GENERO_CHOICES = [
+        ("Masculino", "Masculino"),
+        ("Femenino", "Femenino"),
+        ("Otro", "Otro"),
+    ]
     ESTADO_CHOICES = [
-        ('DISPONIBLE', 'Disponible'),
-        ('PRESTADO', 'Prestado'),
-        ('MANTENIMIENTO', 'En mantenimiento'),
+        ("Pendiente", "Pendiente"),
+        ("Aprobado", "Aprobado"),
     ]
 
-    codigo_barras = models.AutoField(primary_key=True, unique=True)
-    estado = models.CharField(max_length=20, choices=ESTADO_CHOICES)
-    ubicacion = models.CharField(max_length=45)
-    precio = models.DecimalField(max_digits=8, decimal_places=2) 
-    titulo = models.CharField(max_length=200) 
-
-    autor = models.ForeignKey(
-        Autor,
-        on_delete=models.CASCADE,
-        related_name='libros'
-    )
-
-    def __str__(self):
-        return self.titulo
-
-class Publicacion(models.Model):
-    id_publicacion = models.AutoField(primary_key=True)
-    titulo = models.CharField(max_length=200) 
-    edicion = models.CharField(max_length=45)
-    ISBN = models.CharField(max_length=45, unique=True) 
-    fecha_publicacion = models.DateField(auto_now_add=True)
-
-    autor = models.ForeignKey(
-        Autor,
-        on_delete=models.CASCADE,
-        related_name='publicaciones'
-    )
-
-    editorial = models.ForeignKey(
-        Editorial,
-        on_delete=models.CASCADE,
-        related_name='publicaciones'
-    )
-
-    tema = models.ForeignKey(
-        Tema,
-        on_delete=models.CASCADE,
-        related_name='publicaciones'
-    )
-
-    libro = models.ForeignKey(
-        Libro,
-        on_delete=models.CASCADE,
-        related_name='publicaciones'
-    )
+    Num_Documento = models.CharField(max_length=20, primary_key=True)
+    Tipo_Documento = models.CharField(max_length=30, choices=TIPO_DOCUMENTO_CHOICES)
+    Nombre = models.CharField(max_length=50)
+    Apellido = models.CharField(max_length=50)
+    Correo = models.EmailField(max_length=100, unique=True)
+    Telefono = models.CharField(max_length=20)
+    Fecha_Nacimiento = models.DateField()
+    Genero = models.CharField(max_length=20, choices=GENERO_CHOICES)
+    Rol = models.CharField(max_length=15, choices=ROL_CHOICES)
+    
+    # Campos para el LOGIN y APROBACIÓN (Según pizarra)
+    usuario = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    contrasena = models.CharField(max_length=50, null=True, blank=True)
+    estado = models.CharField(max_length=15, choices=ESTADO_CHOICES, default="Pendiente")
 
     def __str__(self):
-        return self.titulo
+        return f"{self.Nombre} {self.Apellido}"
+
+class Estudiante(Persona):
+    Direccion = models.CharField(max_length=150)
+    Grado_Escolar = models.CharField(max_length=50)
+
+class Autor(Persona):
+    ESTADO_CHOICES = [
+        ("Activo", "Activo"),
+        ("Inactivo", "Inactivo"),
+    ]
+    Nacionalidad = models.CharField(max_length=50)
+    Biografia = models.TextField(blank=True, null=True)
+    Estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="Activo")
+
+class Libro(models.Model):
+    ESTADO_CHOICES = [("Activo", "Activo"), ("Inactivo", "Inactivo")]
+    Id_Libro = models.AutoField(primary_key=True)
+    Titulo = models.CharField(max_length=200)
+    Codigo_Barras = models.CharField(max_length=50, unique=True)
+    Estado = models.CharField(max_length=10, choices=ESTADO_CHOICES, default="Activo")
+    Ubicacion = models.CharField(max_length=100)
+    Precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return self.Titulo
 
 class Prestamo(models.Model):
-    id_prestamo = models.AutoField(primary_key=True)
-    Fecha_Prestamo = models.DateField()
+    Id_Prestamo = models.AutoField(primary_key=True)
+    Fecha_Prestamo = models.DateField(auto_now_add=True)
     Fecha_Devolucion = models.DateField()
-    Observacion = models.CharField(max_length=255, null=True, blank=True)
+    Observacion = models.TextField(blank=True, null=True)
+    Id_Libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    Num_Documento = models.ForeignKey(Estudiante, on_delete=models.CASCADE)
 
-    estudiante = models.ForeignKey(
-        Estudiante,
-        on_delete=models.CASCADE,
-        related_name='prestamos'
-    )
-
-    libro = models.ForeignKey(
-        Libro,
-        on_delete=models.CASCADE,
-        related_name='prestamos'
-    )
-
-    def __str__(self):
-        return f"Préstamo {self.id_Prestamo}"
+class Publicacion(models.Model):
+    Id_Publicacion = models.AutoField(primary_key=True)
+    Descripcion = models.TextField(blank=True, null=True)
+    Edicion = models.CharField(max_length=50)
+    Fecha_Publicacion = models.DateField()
+    ISBN = models.CharField(max_length=20, unique=True)
+    Id_Libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
+    Id_Editorial = models.ForeignKey(Editorial, on_delete=models.CASCADE)
+    Id_Tema = models.ForeignKey(Tema, on_delete=models.CASCADE)
+    Num_Documento = models.ForeignKey(Autor, on_delete=models.CASCADE)

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Consultar Persona</title>
+    <style>
+        body { font-family: sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 50px; }
+        .box { background: white; padding: 30px; border-radius: 8px; border-top: 5px solid #0056b3; width: 400px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; text-align: center; }
+        input, button { width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background-color: #0056b3; color: white; border: none; cursor: pointer; font-size: 16px; }
+        .resultado { margin-top: 20px; padding: 15px; border: 1px solid #0056b3; border-radius: 4px; }
+        .aprobado { color: green; font-weight: bold; }
+        .pendiente { color: red; font-weight: bold; }
+        .btn-completar { display: block; text-align: center; background: #28a745; color: white; padding: 10px; text-decoration: none; margin-top: 15px; border-radius: 4px; }
+        .btn-volver { display: block; text-align: center; margin-top: 15px; color: #0056b3; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h2>Consultar Estado</h2>
+        <form method="GET">
+            <input type="text" name="documento" placeholder="Ingresa tu documento" value="{{ busqueda }}" required>
+            <button type="submit">Buscar</button>
+        </form>
+
+        {% if persona %}
+            <div class="resultado">
+                <p><strong>Nombre:</strong> {{ persona.Nombre }} {{ persona.Apellido }}</p>
+                <p><strong>Rol:</strong> {{ persona.Rol }}</p>
+                <p><strong>Estado:</strong> 
+                    {% if persona.estado == 'Aprobado' %}
+                        <span class="aprobado">Aprobado</span>
+                    {% else %}
+                        <span class="pendiente">Pendiente por aprobación</span>
+                    {% endif %}
+                </p>
+
+                {% if persona.estado == 'Aprobado' %}
+                    <a href="{% url 'catalogo:completar_registro' persona.Num_Documento %}" class="btn-completar">Completar Registro de {{ persona.Rol }}</a>
+                {% endif %}
+            </div>
+        {% elif busqueda %}
+            <div class="resultado" style="border-color: red;">
+                <p style="color: red; text-align: center;">No se encontró ningún registro.</p>
+            </div>
+        {% endif %}
+        <a href="{% url 'catalogo:inicio' %}" class="btn-volver">← Volver al Inicio</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+# Entorno virtual (agrega el nombre de tu carpeta de entorno si es diferente)
+catalogo/
+venv/
+env/
+vdrawart/
+
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Base de datos local
+db.sqlite3
+db.sqlite3-journal
+
+# Archivos subidos por usuarios (imágenes, etc.)
+media/
+
+# Archivos estáticos recolectados
+staticfiles/
+
+# Configuraciones locales y secretos
+.env
+.vscode/
+.idea/
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db

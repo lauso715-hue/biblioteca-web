@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Registro</title>
+</head>
+<body>
+
+    <h2>Registro de Persona</h2>
+
+    <!-- Botón para volver al inicio -->
+    <a href="{% url 'catalogo:inicio' %}">
+        <button type="button">← Volver al Inicio</button>
+    </a>
+
+    <br><br>
+
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        
+            <legend>Datos de la Persona</legend>
+            
+            <label for="nombre">Nombre completo:</label><br>
+            <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+            <br><br>
+
+            <label for="tipo_documento">Tipo de documento:</label><br>
+            <select id="tipo_documento" name="tipo_documento" required>
+                <option value="">-- Selecciona una opción --</option>
+                <option value="documento_de_identidad">Documento de Identidad</option>
+                <option value="pasaporte">Pasaporte</option>
+                <option value="cedula_de_ciudadania">Cedula de Ciudadanía</option>
+                <option value="otros">Otros</option>
+            </select>
+            <br><br>
+
+            <label for="numero_de_documento">Número de documento:</label><br>
+            <input type="text" id="numero_de_documento" name="numero_de_documento" required placeholder="1117.....">
+            <br><br>
+
+            <label for="correo">Correo electrónico:</label><br>
+            <input type="email" id="correo" name="correo" required placeholder="tucorreo@ejemplo.com">
+            <br><br>
+
+            <label for="rol">Rol:</label><br>
+            <select id="rol" name="rol" required>
+                <option value="">-- Selecciona una opción --</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="autor">Autor</option>
+            </select>
+            <br><br>
+
+            <label for="genero">Género:</label><br>
+            <select id="genero" name="genero" required>
+                <option value="">-- Selecciona una opción --</option>
+                <option value="femenino">Femenino</option>
+                <option value="masculino">Masculino</option>
+                <option value="otros">Otros</option>
+                <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
+            </select>
+            <br><br>
+
+            <label for="fecha_nacimiento">Fecha de nacimiento:</label><br>
+            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento">
+            <br><br>
+
+            <label for="mensaje">Mensaje:</label><br>
+            <textarea id="mensaje" name="mensaje" rows="4" cols="40" required placeholder="Escribe tu mensaje aquí..."></textarea>
+            <br><br>
+
+            <input type="checkbox" id="terminos" name="acepta_terminos" required>
+            <label for="terminos">Acepto los términos y condiciones</label>
+            <br><br>
+
+            <button type="submit">Enviar mensaje</button>
+            
+        
+    </form>
+
+</body>
+</html>
